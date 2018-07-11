@@ -7,5 +7,7 @@ namespace Game.Ranking.Services.Interfaces
     public interface IGameResultService
     {
         Task<ServiceResult> Save(SaveGameResultMessage message);
+
+        Task<ServiceResult> Replicate();
     }
 }

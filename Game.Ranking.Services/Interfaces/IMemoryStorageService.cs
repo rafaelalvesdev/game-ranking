@@ -8,5 +8,6 @@ namespace Game.Ranking.Services.Interfaces
     {
         ServiceResult StoreInMemory(TEntity entity);
         ServiceResult StoreInMemory(IEnumerable<TEntity> entities);
+        ServiceResult GetFromMemory(int? topRecords = null);
     }
 }

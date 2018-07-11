@@ -3,6 +3,7 @@ using Game.Ranking.Services.Extensions;
 using Game.Ranking.Services.Interfaces;
 using Game.Ranking.Services.Results;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Ranking.Services.Impl
 {
@@ -11,7 +12,8 @@ namespace Game.Ranking.Services.Impl
     {
         IAbstractRepository<TEntity> Repository { get; set; }
 
-        public AbstractMemoryStorageService(IAbstractRepository<TEntity> repository) {
+        public AbstractMemoryStorageService(IAbstractRepository<TEntity> repository)
+        {
             Repository = repository;
         }
 
@@ -25,6 +27,13 @@ namespace Game.Ranking.Services.Impl
         {
             Repository.Create(entity);
             return new ServiceResult().Valid();
+        }
+
+        public ServiceResult GetFromMemory(int? topRecords = null)
+        {
+            var numRecords = topRecords ?? 1000;
+            var items = Repository.Get().Take(numRecords).ToList();
+            return items.AsServiceResult().Valid();
         }
     }
 }

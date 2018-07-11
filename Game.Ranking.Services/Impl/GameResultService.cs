@@ -5,7 +5,6 @@ using Game.Ranking.Services.Extensions;
 using Game.Ranking.Services.Interfaces;
 using Game.Ranking.Services.Messages;
 using Game.Ranking.Services.Results;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +45,16 @@ namespace Game.Ranking.Services.Impl
 
         public async Task<ServiceResult> Replicate()
         {
-            throw new NotImplementedException();
+            var getFromMemoryResult = MemoryStorageService.GetFromMemory() as ServiceResult<List<GameResult>>;
+            ServiceResult replicationResult = null;
+
+            if (getFromMemoryResult.IsValid)
+                replicationResult = ReplicationService.Replicate(getFromMemoryResult.Data);
+
+            if (replicationResult?.IsValid ?? false)
+                return new ServiceResult().Valid();
+            else
+                return new ServiceResult().Invalid();
         }
     }
 }

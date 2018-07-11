@@ -1,4 +1,5 @@
 ﻿using Game.Ranking.Services.Results;
+using System.Collections.Generic;
 
 namespace Game.Ranking.Services.Interfaces
 {
@@ -6,5 +7,6 @@ namespace Game.Ranking.Services.Interfaces
         where TEntity : class
     {
         ServiceResult Replicate(TEntity entity);
+        ServiceResult Replicate(List<TEntity> entity);
     }
 }
