@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Game.Ranking.Infrastructure.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
 
 namespace Game.Ranking.Web
 {
@@ -23,7 +25,14 @@ namespace Game.Ranking.Web
             
             // Dependency Injection
             Game.Ranking.Model.Startup.ConfigureServices(services);
+            Game.Ranking.Infrastructure.Startup.ConfigureServices(services);
             Game.Ranking.Services.Startup.ConfigureServices(services);
+
+            // ElasticSearch connection configuration
+            services.AddSingleton<ElasticClientConfigurator>(provider =>
+            {
+                return new ElasticClientConfigurator(new Nest.ConnectionSettings(new Uri(Configuration.GetConnectionString("ElasticSearch"))));
+            });
 
             // Initialize AutoMapper
             Mapper.Initialize(cfg =>

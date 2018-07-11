@@ -5,11 +5,11 @@ namespace Game.Ranking.Services.Results
     public class ServiceResult
     {
         public bool IsValid { get; set; }
-        public List<string> Errors { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
     }
 
     public class ServiceResult<T> : ServiceResult
     {
-        T Data { get; set; }
+        public T Data { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Game.Ranking.Model;
+using Game.Ranking.Services.Mappers.Resolvers;
 using Game.Ranking.Services.Messages;
+using System.Collections.Generic;
 
 namespace Game.Ranking.Services.Mappers
 {
@@ -7,7 +9,8 @@ namespace Game.Ranking.Services.Mappers
     {
         public GameResultMappingProfile()
         {
-            CreateMap<SaveGameResultMessage, GameResult>();
+            CreateMap<SaveGameResultMessage, List<GameResult>>()
+                .ConvertUsing<SaveGameResultConverter>();                
         }
     }
 }

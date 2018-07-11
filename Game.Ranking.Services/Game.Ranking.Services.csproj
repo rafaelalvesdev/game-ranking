@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Game.Ranking.Infrastructure\Game.Ranking.Infrastructure.csproj" />
     <ProjectReference Include="..\Game.Ranking.Model\Game.Ranking.Model.csproj" />
   </ItemGroup>
 

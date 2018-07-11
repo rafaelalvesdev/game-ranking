@@ -23,7 +23,7 @@ namespace Game.Ranking.Infrastructure.Repositories
         public virtual IResponse IndexBulk<T>(IEnumerable<T> entities) where T : class
         {
             Client.CheckIndexFor<T>();
-            var request = new BulkRequest(typeof(T).Name.ToLower());
+            var request = new BulkRequest(nameof(T));
             List<IBulkOperation> operations = new List<IBulkOperation>();
 
             foreach (var entity in entities)

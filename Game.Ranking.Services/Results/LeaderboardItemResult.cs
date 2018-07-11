@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Game.Ranking.Model
+namespace Game.Ranking.Services.Results
 {
-    class Leaderboard
+    public class LeaderboardItemResult
     {
         public long PlayerID { get; set; }
         public long Balance { get; set; }
