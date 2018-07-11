@@ -1,7 +1,7 @@
 ﻿using Nest;
 using System.Collections.Generic;
 
-namespace Game.Ranking.Infrastructure.Interfaces
+namespace Game.Ranking.Infrastructure.Replication.Interfaces
 {
     public interface IAbstractRepository
     {

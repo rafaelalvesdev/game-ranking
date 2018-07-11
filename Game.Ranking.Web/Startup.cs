@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using Game.Ranking.Infrastructure.Impl;
+using Game.Ranking.Infrastructure.Replication.Impl;
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +23,13 @@ namespace Game.Ranking.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            // MVC
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             
             // Dependency Injection
             Game.Ranking.Model.Startup.ConfigureServices(services);
-            Game.Ranking.Infrastructure.Startup.ConfigureServices(services);
+            Game.Ranking.Infrastructure.Replication.Startup.ConfigureServices(services);
+            Game.Ranking.Infrastructure.InMemory.Startup.ConfigureServices(services);
             Game.Ranking.Services.Startup.ConfigureServices(services);
 
             // ElasticSearch connection configuration
@@ -45,19 +49,28 @@ namespace Game.Ranking.Web
             {
                 cfg.SwaggerDoc("v1", new Info { Title = "Game.Ranking.API", Version = "v1" });
             });
+
+            // Add Hangfire (Job scheduler)
+            services.AddHangfire(config => config.UseStorage(new MemoryStorage()));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
+            //
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+            // Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Game Ranking API V1");
             });
 
+            // Hangfire
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+
+            // MVC
             app.UseMvc();
         }
     }

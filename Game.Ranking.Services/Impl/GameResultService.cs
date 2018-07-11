@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Game.Ranking.Infrastructure.Interfaces;
 using Game.Ranking.Model;
 using Game.Ranking.Model.Validators.Interfaces;
 using Game.Ranking.Services.Extensions;
 using Game.Ranking.Services.Interfaces;
 using Game.Ranking.Services.Messages;
 using Game.Ranking.Services.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,12 +14,14 @@ namespace Game.Ranking.Services.Impl
 {
     public class GameResultService : IGameResultService
     {
-        private IGameResultRepository Repository { get; set; }
+        private IGameResultMemoryStorageService MemoryStorageService { get; set; }
+        private IGameResultReplicationService ReplicationService { get; set; }
         private IGameResultValidator Validator { get; set; }
 
-        public GameResultService(IGameResultRepository repository, IGameResultValidator validator)
+        public GameResultService(IGameResultMemoryStorageService msService, IGameResultReplicationService rService, IGameResultValidator validator)
         {
-            Repository = repository;
+            MemoryStorageService = msService;
+            ReplicationService = rService;
             Validator = validator;
         }
 
@@ -37,12 +39,14 @@ namespace Game.Ranking.Services.Impl
 
             if (!allValid)
                 return new ServiceResult().Invalid().WithErrors(errorMessages);
+            
+            var response = MemoryStorageService.StoreInMemory(gameResults);
+            return response;
+        }
 
-            var response = Repository.IndexBulk(gameResults);
-            if (!response.IsValid)
-                return response.DebugInformation.AsServiceResult().Invalid();
-            else
-                return new ServiceResult().Valid();
+        public async Task<ServiceResult> Replicate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

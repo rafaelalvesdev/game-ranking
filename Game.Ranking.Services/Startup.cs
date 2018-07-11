@@ -10,7 +10,11 @@ namespace Game.Ranking.Services
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IGameResultMemoryStorageService, GameResultMemoryStorageService>();
+            services.AddSingleton<IGameResultReplicationService, GameResultReplicationService>();
+
             services.AddSingleton<IGameResultService, GameResultService>();
+
             services.AddSingleton<ILeaderboardService, LeaderboardService>();
         }
 

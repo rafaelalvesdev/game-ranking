@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace Game.Ranking.Infrastructure.Impl
+namespace Game.Ranking.Infrastructure.Replication.Impl
 {
     public class GameRankingElasticClient : ElasticClient
         {

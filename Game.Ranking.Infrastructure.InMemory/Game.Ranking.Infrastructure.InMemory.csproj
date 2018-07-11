@@ -5,12 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game.Ranking.Infrastructure.InMemory\Game.Ranking.Infrastructure.InMemory.csproj" />
-    <ProjectReference Include="..\Game.Ranking.Infrastructure.Replication\Game.Ranking.Infrastructure.Replication.csproj" />
     <ProjectReference Include="..\Game.Ranking.Model\Game.Ranking.Model.csproj" />
   </ItemGroup>
 

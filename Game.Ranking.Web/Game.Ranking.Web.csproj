@@ -5,11 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="HangFire" Version="1.6.19" />
+    <PackageReference Include="Hangfire.MemoryStorage" Version="1.5.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
@@ -18,7 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game.Ranking.Infrastructure\Game.Ranking.Infrastructure.csproj" />
+    <ProjectReference Include="..\Game.Ranking.Infrastructure.InMemory\Game.Ranking.Infrastructure.InMemory.csproj" />
+    <ProjectReference Include="..\Game.Ranking.Infrastructure.Replication\Game.Ranking.Infrastructure.Replication.csproj" />
     <ProjectReference Include="..\Game.Ranking.Model\Game.Ranking.Model.csproj" />
     <ProjectReference Include="..\Game.Ranking.Services\Game.Ranking.Services.csproj" />
   </ItemGroup>

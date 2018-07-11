@@ -1,7 +1,7 @@
-﻿using Game.Ranking.Infrastructure.Impl;
-using Game.Ranking.Infrastructure.Interfaces;
+﻿using Game.Ranking.Infrastructure.Replication.Impl;
+using Game.Ranking.Infrastructure.Replication.Interfaces;
 
-namespace Game.Ranking.Infrastructure.Repositories
+namespace Game.Ranking.Infrastructure.Replication.Repositories
 {
     public class GameResultRepository : AbstractRepository, IGameResultRepository
     {

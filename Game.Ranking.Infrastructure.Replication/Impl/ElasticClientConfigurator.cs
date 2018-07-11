@@ -1,6 +1,6 @@
 ﻿using Nest;
 
-namespace Game.Ranking.Infrastructure.Impl
+namespace Game.Ranking.Infrastructure.Replication.Impl
 {
     public class ElasticClientConfigurator
     {

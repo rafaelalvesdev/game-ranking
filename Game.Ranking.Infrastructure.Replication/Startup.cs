@@ -1,9 +1,9 @@
-﻿using Game.Ranking.Infrastructure.Impl;
-using Game.Ranking.Infrastructure.Interfaces;
-using Game.Ranking.Infrastructure.Repositories;
+﻿using Game.Ranking.Infrastructure.Replication.Impl;
+using Game.Ranking.Infrastructure.Replication.Interfaces;
+using Game.Ranking.Infrastructure.Replication.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Game.Ranking.Infrastructure
+namespace Game.Ranking.Infrastructure.Replication
 {
     public class Startup
     {
