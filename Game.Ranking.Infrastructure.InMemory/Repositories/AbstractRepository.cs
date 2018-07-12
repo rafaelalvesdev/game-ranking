@@ -33,7 +33,7 @@ namespace Game.Ranking.Infrastructure.InMemory.Repositories
         public void Create(IEnumerable<TEntity> entities)
         {
             if (entities == null) throw new ArgumentNullException("entities");
-            entities.ToList().ForEach(x => x.UpdateInsertedTime());
+            foreach (var e in entities) e.UpdateInsertedTime();
             DbContext.Set<TEntity>().AddRange(entities);
             DbContext.SaveChanges();
         }

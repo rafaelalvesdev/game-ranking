@@ -25,10 +25,10 @@ namespace Game.Ranking.Services.Impl
             return response.AsServiceResult().SetValid(response?.IsValid ?? false);
         }
 
-        public ServiceResult Replicate(IEnumerable<TEntity> entity)
+        public ServiceResult Replicate(IEnumerable<TEntity> entities)
         {
-            entity.ToList().ForEach(x => x.UpdateReplicatedTime());
-            var response = Repository.IndexBulk(entity);
+            foreach (var e in entities) e.UpdateReplicatedTime();
+            var response = Repository.IndexBulk(entities);
             return response.AsServiceResult().SetValid(response?.IsValid ?? false);
         }
     }
