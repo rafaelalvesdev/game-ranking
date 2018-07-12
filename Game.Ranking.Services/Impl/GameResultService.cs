@@ -17,16 +17,13 @@ namespace Game.Ranking.Services.Impl
         private IGameResultMemoryStorageService MemoryStorageService { get; set; }
         private IGameResultReplicationService ReplicationService { get; set; }
         private IGameResultValidator Validator { get; set; }
-        private ILeaderboardService LeaderboardService { get; set; }
 
 
-        public GameResultService(IGameResultMemoryStorageService msService, IGameResultReplicationService rService, 
-                                 IGameResultValidator validator, ILeaderboardService leaderboardService)
+        public GameResultService(IGameResultMemoryStorageService msService, IGameResultReplicationService rService, IGameResultValidator validator)
         {
             MemoryStorageService = msService;
             ReplicationService = rService;
             Validator = validator;
-            LeaderboardService = leaderboardService;
         }
 
         public async Task<ServiceResult> Save(SaveGameResultMessage message)
@@ -65,7 +62,6 @@ namespace Game.Ranking.Services.Impl
             if (replResult.IsValid)
             {
                 MemoryStorageService.DeleteFromMemory(mItemsResult.Data);
-                LeaderboardService.InvalidateLeaderboardCache();
 
                 return new ServiceResult().Valid();
             }

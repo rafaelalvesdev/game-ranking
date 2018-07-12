@@ -11,7 +11,6 @@ namespace Game.Ranking.Infrastructure.InMemory.Repositories
         where TEntity : ReplicableObject
     {
         internal DbContext DbContext;
-        public object LockObject { get; } = new object();
 
         #region .ctor
         public AbstractRepository(DbContext dbContext)
@@ -55,12 +54,6 @@ namespace Game.Ranking.Infrastructure.InMemory.Repositories
         {
             if (entities == null) throw new ArgumentNullException("entity");
             DbContext.Set<TEntity>().RemoveRange(entities);
-            DbContext.SaveChanges();
-        }
-
-        public void DeleteAll()
-        {
-            DbContext.Set<TEntity>().RemoveRange(DbContext.Set<TEntity>());
             DbContext.SaveChanges();
         }
 

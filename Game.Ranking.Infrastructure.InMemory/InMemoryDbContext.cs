@@ -8,7 +8,6 @@ namespace Game.Ranking.Infrastructure.InMemory
         public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options) : base(options) { }
 
         public DbSet<GameResult> GameResults { get; set; }
-        public DbSet<LeaderboardItem> Leaderboard { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
