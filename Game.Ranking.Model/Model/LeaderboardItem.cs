@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Nest;
+using System;
 
 namespace Game.Ranking.Model
 {
-    public class LeaderboardItem : ReplicableObject
+    [ElasticsearchType(IdProperty = nameof(PlayerID))]
+    public class LeaderboardItem
     {
         public long PlayerID { get; set; }
         public long Balance { get; set; }

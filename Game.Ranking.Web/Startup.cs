@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.IO;
 
 namespace Game.Ranking.Web
 {
@@ -51,6 +52,9 @@ namespace Game.Ranking.Web
             services.AddSwaggerGen(cfg =>
             {
                 cfg.SwaggerDoc("v1", new Info { Title = "Game.Ranking.API", Version = "v1" });
+                
+                foreach (var xml in Directory.EnumerateFiles(AppContext.BaseDirectory, "Game.Ranking.*.xml"))
+                    cfg.IncludeXmlComments(xml, true);
             });
 
             // Add Hangfire (Job scheduler)
