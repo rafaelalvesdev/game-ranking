@@ -9,10 +9,15 @@ namespace Game.Ranking.Web.Controllers
     [Route("leaderboard")]
     public class LeaderboardController : BaseController
     {
+        /// <summary>
+        /// Recupera o leaderboard (ranking) dos jogadores
+        /// </summary>
+        /// <param name="top">TOP do Número de jogadores para recuperar do ranking (Max. 1000 / Default 100)</param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ServiceResult> Get([FromServices] ILeaderboardService service, [FromQuery] int? numTop = null)
+        public async Task<ServiceResult> Get([FromServices] ILeaderboardService service, [FromQuery] int? top = null)
         {
-            return await service.GetLeaderboard(numTop);
+            return await service.GetLeaderboard(top);
         }
     }
 }
