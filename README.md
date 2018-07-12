@@ -1,8 +1,7 @@
 ## Game.Ranking API
----
 
 
-##### Dependências
+#### Dependências
 * .NET Core 2.1 SDK (v2.1.302) ou superior - [Download](https://www.microsoft.com/net/download/thank-you/dotnet-sdk-2.1.302-windows-x64-installer ".NET Core 2.1 SDK")
 * .NET Core 2.1 Runtime (v2.1.2) ou superior - [Download](https://www.microsoft.com/net/download/thank-you/dotnet-runtime-2.1.2-windows-hosting-bundle-installer ".NET Core 2.1 Runtime")
 * ElasticSearch - [Download](https://www.elastic.co/downloads/elasticsearch "Download ElasticSearch")
@@ -11,14 +10,14 @@
 Para executar o projeto em DEBUG, utilizar Visual Studio 15.7 ou superior.
 
 
-##### Componentes utilizados
+#### Componentes utilizados
 * Nest (High level ElasticSearch client)
 * Entity Framework Core (InMemory Database)
 * Hangfire (Job scheduler)
 * Swashbuckle (API Swagger generator)
 
 
-##### Configurações 
+#### Configurações 
 1. Configurar a URL de conexão com o ElasticSearch em `code/Game.Ranking.Web/Properties/appsettings.json`, na propriedade `ConnectionStrings / ElasticSearch`.
     -- Por padrão é utilizado http://localhost:9200/
 2. Iniciar ElasticSearch 
@@ -26,7 +25,7 @@ Para executar o projeto em DEBUG, utilizar Visual Studio 15.7 ou superior.
 3. Iniciar a aplicação (Config DEBUG ou RELEASE)
 
 
-##### Recursos
+#### Recursos
 Na API estão disponíveis 3 endpoints:
 1. Inserção de dados de GameResult `POST` `/game-results`.
     -- Os dados recebidos são validados e armazenados em um InMemory database.
@@ -39,6 +38,6 @@ Na API estão disponíveis 3 endpoints:
     -- É possível enviar o parâmetro top na querystring para definir o número de jogadores que será retornado, o valor deve estar entre 1 e 1000. Caso não seja enviado será utilizado o default de top 100 jogadores.
 
 
-##### Utilização
+#### Utilização
 * Caso o projeto seja executado em modo DEBUG a API pode ser utilizada através da URL [http://localhost:51334/](http://localhost:51334/).
 * A API pode ser acessada e utilizada pelo Swagger, em [http://localhost:51334/swagger](http://localhost:51334/swagger).
