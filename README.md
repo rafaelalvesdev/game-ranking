@@ -30,7 +30,7 @@ Na API estão disponíveis 3 endpoints:
 1. Inserção de dados de GameResult `POST` `/game-results`.
     * Os dados recebidos são validados e armazenados em um InMemory database.
 2. Replicação `POST` `/game-results/replicate` 
-    * Os dados recebidos capturados da memória e enviados ao ElasticSearch.
+    * Os dados são capturados da memória e enviados ao ElasticSearch.
     * Essa rotina roda automaticamente a cada 5 minutos, porém o sistema disponibiliza um endpoint para acelerar o intervalo da replicação.
 3. Recuperar Leaderboard (ranking) `GET` `/leaderboard`
     * Os dados são agregados e recuperados do ElasticSearch.
