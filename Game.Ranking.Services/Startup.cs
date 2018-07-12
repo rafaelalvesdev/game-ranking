@@ -21,7 +21,6 @@ namespace Game.Ranking.Services
         public static void AddMapperProfiles(IMapperConfigurationExpression cfg)
         {
             cfg.AddProfile<GameResultMappingProfile>();
-            cfg.AddProfile<LeaderboardMappingProfile>();
         }
     }
 }

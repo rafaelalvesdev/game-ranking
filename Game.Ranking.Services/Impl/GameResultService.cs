@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Game.Ranking.Infrastructure.InMemory.Interfaces;
 using Game.Ranking.Model;
 using Game.Ranking.Model.Validators.Interfaces;
 using Game.Ranking.Services.Extensions;
@@ -16,12 +17,16 @@ namespace Game.Ranking.Services.Impl
         private IGameResultMemoryStorageService MemoryStorageService { get; set; }
         private IGameResultReplicationService ReplicationService { get; set; }
         private IGameResultValidator Validator { get; set; }
+        private ILeaderboardService LeaderboardService { get; set; }
 
-        public GameResultService(IGameResultMemoryStorageService msService, IGameResultReplicationService rService, IGameResultValidator validator)
+
+        public GameResultService(IGameResultMemoryStorageService msService, IGameResultReplicationService rService, 
+                                 IGameResultValidator validator, ILeaderboardService leaderboardService)
         {
             MemoryStorageService = msService;
             ReplicationService = rService;
             Validator = validator;
+            LeaderboardService = leaderboardService;
         }
 
         public async Task<ServiceResult> Save(SaveGameResultMessage message)
@@ -30,7 +35,8 @@ namespace Game.Ranking.Services.Impl
 
             var errorMessages = new List<string>();
             var allValid = true;
-            gameResults.ForEach(x => {
+            gameResults.ForEach(x =>
+            {
                 var result = Validator.Validate(x);
                 errorMessages.AddRange(result.Errors?.Select(e => e.ErrorMessage));
                 allValid = allValid && result.IsValid;
@@ -38,21 +44,31 @@ namespace Game.Ranking.Services.Impl
 
             if (!allValid)
                 return new ServiceResult().Invalid().WithErrors(errorMessages);
-            
+
             var response = MemoryStorageService.StoreInMemory(gameResults);
             return response;
         }
 
         public async Task<ServiceResult> Replicate()
         {
-            var getFromMemoryResult = MemoryStorageService.GetFromMemory() as ServiceResult<List<GameResult>>;
-            ServiceResult replicationResult = null;
+            var mItemsResult = MemoryStorageService.GetFromMemory() as ServiceResult<List<GameResult>>;
+            ServiceResult replResult = null;
 
-            if (getFromMemoryResult.IsValid)
-                replicationResult = ReplicationService.Replicate(getFromMemoryResult.Data);
+            if (mItemsResult.IsValid)
+                if (mItemsResult.Data.Count() == 0)
+                    return new ServiceResult().Valid();
+                else
+                {
+                    replResult = ReplicationService.Replicate(mItemsResult.Data);
+                }
 
-            if (replicationResult?.IsValid ?? false)
+            if (replResult.IsValid)
+            {
+                MemoryStorageService.DeleteFromMemory(mItemsResult.Data);
+                LeaderboardService.InvalidateLeaderboardCache();
+
                 return new ServiceResult().Valid();
+            }
             else
                 return new ServiceResult().Invalid();
         }

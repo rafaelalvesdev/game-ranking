@@ -1,4 +1,5 @@
 ﻿using Game.Ranking.Infrastructure.InMemory.Interfaces;
+using Game.Ranking.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,10 @@ using System.Linq;
 namespace Game.Ranking.Infrastructure.InMemory.Repositories
 {
     public abstract class AbstractRepository<TEntity> : IAbstractRepository<TEntity>
-        where TEntity : class
+        where TEntity : ReplicableObject
     {
         internal DbContext DbContext;
+        public object LockObject { get; } = new object();
 
         #region .ctor
         public AbstractRepository(DbContext dbContext)
@@ -23,6 +25,7 @@ namespace Game.Ranking.Infrastructure.InMemory.Repositories
         public TEntity Create(TEntity entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
+            entity.UpdateInsertedTime();
             DbContext.Set<TEntity>().Add(entity);
             DbContext.SaveChanges();
             return entity;
@@ -31,6 +34,7 @@ namespace Game.Ranking.Infrastructure.InMemory.Repositories
         public void Create(IEnumerable<TEntity> entities)
         {
             if (entities == null) throw new ArgumentNullException("entities");
+            entities.ToList().ForEach(x => x.UpdateInsertedTime());
             DbContext.Set<TEntity>().AddRange(entities);
             DbContext.SaveChanges();
         }
@@ -44,6 +48,19 @@ namespace Game.Ranking.Infrastructure.InMemory.Repositories
         {
             if (entity == null) throw new ArgumentNullException("entity");
             DbContext.Set<TEntity>().Remove(entity);
+            DbContext.SaveChanges();
+        }
+
+        public void Delete(IEnumerable<TEntity> entities)
+        {
+            if (entities == null) throw new ArgumentNullException("entity");
+            DbContext.Set<TEntity>().RemoveRange(entities);
+            DbContext.SaveChanges();
+        }
+
+        public void DeleteAll()
+        {
+            DbContext.Set<TEntity>().RemoveRange(DbContext.Set<TEntity>());
             DbContext.SaveChanges();
         }
 

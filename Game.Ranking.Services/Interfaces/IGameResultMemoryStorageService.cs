@@ -2,7 +2,7 @@
 
 namespace Game.Ranking.Services.Interfaces
 {
-    public interface IGameResultMemoryStorageService : IMemoryStorageService<GameResult>
+    public interface IGameResultMemoryStorageService : IAbstractMemoryStorageService<GameResult>
     {
     }
 }

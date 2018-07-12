@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Game.Ranking.Services.Impl
 {
-    public abstract class AbstractMemoryStorageService<TEntity> : IMemoryStorageService<TEntity>
+    public abstract class AbstractMemoryStorageService<TEntity> : IAbstractMemoryStorageService<TEntity>
         where TEntity : class
     {
         IAbstractRepository<TEntity> Repository { get; set; }
@@ -31,9 +31,21 @@ namespace Game.Ranking.Services.Impl
 
         public ServiceResult GetFromMemory(int? topRecords = null)
         {
-            var numRecords = topRecords ?? 1000;
+            var numRecords = topRecords ?? 10000;
             var items = Repository.Get().Take(numRecords).ToList();
             return items.AsServiceResult().Valid();
+        }
+
+        public ServiceResult DeleteFromMemory(TEntity entity)
+        {
+            Repository.Delete(entity);
+            return new ServiceResult().Valid();
+        }
+
+        public ServiceResult DeleteFromMemory(List<TEntity> entities)
+        {
+            Repository.Delete(entities);
+            return new ServiceResult().Valid();
         }
     }
 }

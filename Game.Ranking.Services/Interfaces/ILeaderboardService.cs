@@ -5,6 +5,8 @@ namespace Game.Ranking.Services.Interfaces
 {
     public interface ILeaderboardService
     {
-        Task<ServiceResult> GetLeaderboard();
+        Task<ServiceResult> GetLeaderboard(int? topRecords = null);
+
+        void InvalidateLeaderboardCache();
     }
 }

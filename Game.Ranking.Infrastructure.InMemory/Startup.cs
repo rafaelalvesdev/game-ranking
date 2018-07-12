@@ -18,6 +18,7 @@ namespace Game.Ranking.Infrastructure.InMemory
             });
 
             services.AddSingleton<IGameResultRepository, GameResultRepository>();
+            services.AddSingleton<ILeaderboardItemRepository, LeaderboardItemRepository>();
         }
     }
 }

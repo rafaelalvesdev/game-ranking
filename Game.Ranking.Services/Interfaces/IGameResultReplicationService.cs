@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Game.Ranking.Services.Interfaces
 {
-    public interface IGameResultReplicationService : IReplicationService<GameResult>
+    public interface IGameResultReplicationService : IAbstractReplicationService<GameResult>
     {
     }
 }

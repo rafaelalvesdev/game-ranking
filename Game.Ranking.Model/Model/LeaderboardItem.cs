@@ -1,9 +1,11 @@
-﻿namespace Game.Ranking.Model
+﻿using System;
+
+namespace Game.Ranking.Model
 {
-    public class LeaderboardItem
+    public class LeaderboardItem : ReplicableObject
     {
         public long PlayerID { get; set; }
         public long Balance { get; set; }
-        public long LastUpdateDate { get; set; }
+        public DateTime LastUpdateDate { get; set; }
     }
 }

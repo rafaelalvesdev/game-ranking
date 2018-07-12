@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Game.Ranking.Infrastructure.Replication.Impl;
+using Game.Ranking.Services.Interfaces;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +36,9 @@ namespace Game.Ranking.Web
             // ElasticSearch connection configuration
             services.AddSingleton<ElasticClientConfigurator>(provider =>
             {
-                return new ElasticClientConfigurator(new Nest.ConnectionSettings(new Uri(Configuration.GetConnectionString("ElasticSearch"))));
+                var settings = new Nest.ConnectionSettings(new Uri(Configuration.GetConnectionString("ElasticSearch")));
+                settings.DisableDirectStreaming();
+                return new ElasticClientConfigurator(settings);
             });
 
             // Initialize AutoMapper
@@ -56,7 +59,7 @@ namespace Game.Ranking.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //
+            // Dev Exception Page
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             // Swagger
@@ -69,6 +72,9 @@ namespace Game.Ranking.Web
             // Hangfire
             app.UseHangfireDashboard();
             app.UseHangfireServer();
+
+            // Schedule Replication Service
+            RecurringJob.AddOrUpdate(() => app.ApplicationServices.GetRequiredService<IGameResultService>().Replicate(), Cron.MinuteInterval(5));
 
             // MVC
             app.UseMvc();

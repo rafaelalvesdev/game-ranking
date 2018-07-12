@@ -1,13 +1,15 @@
 ﻿using Game.Ranking.Infrastructure.Replication.Interfaces;
+using Game.Ranking.Model;
+using Game.Ranking.Services.Extensions;
 using Game.Ranking.Services.Interfaces;
 using Game.Ranking.Services.Results;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Game.Ranking.Services.Impl
 {
-    public class AbstractReplicationService<TEntity> : IReplicationService<TEntity>
-        where TEntity : class
+    public class AbstractReplicationService<TEntity> : IAbstractReplicationService<TEntity>
+        where TEntity : ReplicableObject
     {
         internal virtual IAbstractRepository<TEntity> Repository { get; set; }
 
@@ -18,12 +20,16 @@ namespace Game.Ranking.Services.Impl
 
         public ServiceResult Replicate(TEntity entity)
         {
-            throw new NotImplementedException();
+            entity.UpdateReplicatedTime();
+            var response = Repository.Index(entity);
+            return response.AsServiceResult().SetValid(response?.IsValid ?? false);
         }
 
-        public ServiceResult Replicate(List<TEntity> entity)
+        public ServiceResult Replicate(IEnumerable<TEntity> entity)
         {
-            throw new NotImplementedException();
+            entity.ToList().ForEach(x => x.UpdateReplicatedTime());
+            var response = Repository.IndexBulk(entity);
+            return response.AsServiceResult().SetValid(response?.IsValid ?? false);
         }
     }
 }

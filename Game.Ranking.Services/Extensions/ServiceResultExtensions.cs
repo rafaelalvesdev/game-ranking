@@ -25,6 +25,12 @@ namespace Game.Ranking.Services.Extensions
             return serviceResult;
         }
 
+        public static ServiceResult SetValid(this ServiceResult serviceResult, bool isValid)
+        {
+            serviceResult.IsValid = isValid;
+            return serviceResult;
+        }
+
         public static ServiceResult WithErrors(this ServiceResult serviceResult, List<string> ErrorMessages)
         {
             serviceResult.Errors.AddRange(ErrorMessages);

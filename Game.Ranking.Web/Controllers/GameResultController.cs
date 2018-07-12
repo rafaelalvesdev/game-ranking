@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Game.Ranking.Web.Controllers
 {
+    [ApiController]
+    [Route("game-results")]
     public class GameResultController : BaseController
     {
         [HttpPost]
